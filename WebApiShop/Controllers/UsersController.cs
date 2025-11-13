@@ -61,6 +61,15 @@ namespace WebAPIShop.Controllers
             _service.updateUser(id, myUser);
         }
 
+        [HttpPost("check")]
+        public ActionResult<int> checkPassword([FromBody] string password)
+        {
+            var score = _service.checlPassword(password);
+            Response.Headers.Add("X-Password-Score", score.ToString());
+            return NoContent();
+        }
+
+
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
