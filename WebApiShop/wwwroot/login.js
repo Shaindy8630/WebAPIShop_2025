@@ -5,34 +5,9 @@ const passwordForUpdate = document.querySelector("#password");
 
 
 const register = async () => {
-    const password = passwordForUpdate.value;
+  
 
-    try {
-        const response = await fetch('https://localhost:44367/api/Users/checkPassword', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(password)
-        });
-        
-        if (response.status === 204) {
-            const score = Number(response.headers.get('X-Password-Score'));
-            if (score < 2) {
-                alert("הסיסמה שלך חלשה מדי, בחר סיסמה חזקה יותר");
-                return;
-            }
-        }
-        else {
-            alert("Error");
-        }
-        
-        if (score < 2) {
-            alert("הסיסמה שלך חלשה מדי, בחר סיסמה חזקה יותר.");
-            return;
-        }
-    }
-    catch (error) {
-        console.error('Error occurred:', error);
-    }
+   
 
     const newUser = {
         userId: 0,
@@ -83,7 +58,7 @@ const login = async () => {
             body: JSON.stringify(loginUser)
         })
 
-        if (response.ok && response.status !== 204) {
+        if (response.ok && response.status == 204) {
             const user = await response.json();
             sessionStorage.setItem('CurrentUser', JSON.stringify(user))
             window.location.href = "update.html"
@@ -96,41 +71,32 @@ const login = async () => {
         console.error('Error occurred:', error);
     }
 }
-const checkPassword = async () => {
-    const pass = passwordForUpdate.value;
-    const response = await fetch('https://localhost:44367/api/Users/check', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-
-        },
-        body: JSON.stringify(pass)
-    })
-    if (response.status === 204) {
-        const score = Number(response.headers.get('X-Password-Score'));
-        updateStrengthUI(score);
+const checkStrength = async () => {
+    const password = passwordForUpdate.value;
+    const passwordObj = {
+        password: password,
+        Strength: 0
+    };
+    try {
+        const response = await fetch('https://localhost:44367/api/Password', {  ///checkPassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(passwordObj)
+        })
+        if (!response.ok) {
+            throw new Error(`HTTP error! status${response.status}`)
+        }
+        const result = await response.json();
+        const score = Number(result.strength);
+        const bar = document.getElementById("progressBar");
+        bar.value = score * 25;
     }
-    else {
-        alert("Error");
+    catch (error) {
+        alert("error")
+        console.error('Error occurred:', error);
     }
-
-    
-
-    updateStrengthUI(score);
-    
-
-}
-function updateStrengthUI(score) {
-    const colors = ["#ff4d4d", "#ff944d", "#ffdb4d", "#80ff80", "#33cc33"];
-    const text = ["חלשה מאוד", "חלשה", "בינונית", "חזקה", "חזקה מאוד"];
-
-    for (let i = 0; i < 5; i++) {
-        const box = document.getElementById("l" + i);
-        box.style.backgroundColor = (i <= score) ? colors[score] : "#ddd";
-    }
-
-    document.getElementById("strengthText").innerText =
-        `דירוג ${score} – ${text[score]}`;
 }
 
 

@@ -17,12 +17,12 @@ namespace Entity
 
     }
 
-    public class LoginUsers
-    {
-        public string LoginUserEmail { get; set; }
-        public string LoginUserPassword { get; set; }
+    //public class LoginUsers
+    //{
+    //    public string LoginUserEmail { get; set; }
+    //    public string LoginUserPassword { get; set; }
 
-    }
+    //}
 }
 
 

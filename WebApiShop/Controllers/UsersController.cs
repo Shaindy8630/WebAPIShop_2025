@@ -1,73 +1,82 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using System.Text.Json;
+using Entity;
+using Service;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-using Entity;
+
 using Repository;
-using Service;
+
 namespace WebAPIShop.Controllers
 {
 
     [Route("api/[controller]")]
     [ApiController]
 
-    public class UsersController : ControllerBase
+    public class UsersController : ControllerBase, IUserController
     {
-        string _filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "usersInfo.txt");
-        private readonly Service.Service _service = new Service.Service();
-        // GET: api/<UsersController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "can't show users list:(" };
-        //}
+
+        IUserService _iUserService;
+        IPasswordService _iPasswordService;
+
+        public UsersController(IUserService userService, IPasswordService passwordService)
+        {
+            _iUserService = userService;
+            _iPasswordService = passwordService;
+        }
+
+        //GET: api/<UsersController>
+        [HttpGet]
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "can't show users list:(" };
+        }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
         public ActionResult<Users> Get(int id)
         {
-            
-            var user = _service.getUserByID(id);
-            if (user == null)
-                return NotFound();
 
+            var user = _iUserService.getUserByID(id);
+            if (user == null)
+                return NoContent();
             return Ok(user);
-           
+
         }
 
         // POST api/<UsersController>
         [HttpPost]
         public ActionResult<Users> Post([FromBody] Users user)
         {
-            var result = _service.addUser(user);
-            return CreatedAtAction(nameof(Get), new { id = result.UserId }, result);
-
+            bool p = _iPasswordService.isPasswordStrong(user.UserPassword);
+            if (!p)
+                return BadRequest("Password is not strong enough.");
+            var newUser = _iUserService.addUser(user);
+            return CreatedAtAction(nameof(Get), new { id = newUser.UserId }, newUser);
         }
 
         [HttpPost("login")]
-        public ActionResult<Users> Login([FromBody] LoginUsers loginUser)
+        public ActionResult<Users> Login([FromBody] Users loginUser)
         {
-            var result = _service.loginUser(loginUser);
-            return result == null ? Unauthorized() : Ok(result);
-           
+            var user = _iUserService.loginUser(loginUser);
+            if (user != null)
+                return Ok(user);
+            return NotFound();
         }
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Users myUser)
+        public IActionResult Put(int id, [FromBody] Users myUser)
         {
-            _service.updateUser(id, myUser);
-        }
-
-        [HttpPost("check")]
-        public ActionResult<int> checkPassword([FromBody] string password)
-        {
-            var score = _service.checlPassword(password);
-            Response.Headers.Add("X-Password-Score", score.ToString());
+            bool p = _iUserService.updateUser(id, myUser);
+            if (!p)
+                return BadRequest("Password is not strong enough");
             return NoContent();
         }
+
+       
 
 
         // DELETE api/<UsersController>/5

@@ -5,12 +5,12 @@ using Entity;
 namespace Repository
  
 {
-    public class Repository
+    public class UserRepository : IUserRepository
     {
         string _filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "usersInfo.txt");
         public Users getUserByID(int id)
         {
-            string _filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "usersInfo.txt");
+           
             using (StreamReader reader = System.IO.File.OpenText(_filePath))
             {
                 string? currentUserInFile;
@@ -31,7 +31,7 @@ namespace Repository
             System.IO.File.AppendAllText(_filePath, userJson + Environment.NewLine);
             return user;
         }
-        public Users loginUser(LoginUsers loginUser)
+        public Users loginUser(Users loginUser)
         {
             using (StreamReader reader = System.IO.File.OpenText(_filePath))
             {
@@ -39,7 +39,7 @@ namespace Repository
                 while ((currentUserInFile = reader.ReadLine()) != null)
                 {
                     Users user = JsonSerializer.Deserialize<Users>(currentUserInFile);
-                    if (user.UserEmail == loginUser.LoginUserEmail && user.UserPassword == loginUser.LoginUserPassword)
+                    if (user.UserEmail == loginUser.UserEmail && user.UserPassword == loginUser.UserPassword)
                         return user;
                 }
             }
