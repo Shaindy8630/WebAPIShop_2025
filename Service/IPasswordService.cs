@@ -9,8 +9,8 @@ namespace Service
 {
     public interface IPasswordService
     {
-        Password checkPasswordStrong(Password password);
-        Password checkPasswordStrong(string password);
-        bool isPasswordStrong(string password, int minStrength = 2);
+        Password CheckPasswordStrong(Password password);
+        Password CheckPasswordStrong(string password);
+        bool IsPasswordStrong(string password, int minStrength = 2);
     }
 }
