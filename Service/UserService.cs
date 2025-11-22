@@ -13,30 +13,30 @@ namespace Service
         {
             _userRepository = userRepository;
         }
-        public Users getUserByID(int id)
+        public Users GetUserById(int id)
         {
            
-            return _userRepository.getUserByID(id);
+            return _userRepository.GetUserById(id);
         }
 
-        public Users addUser(Users user)
+        public Users AddUser(Users user)
         {
            
-            return _userRepository.addUser(user);
+            return _userRepository.AddUser(user);
         }
 
-        public Users loginUser(Users loginUser)
+        public Users LoginUser(Users loginUser)
         {
             
-            return _userRepository.loginUser(loginUser);
+            return _userRepository.LoginUser(loginUser);
         }
-        public bool updateUser(int id, Users myUser)
+        public bool UpdateUser(int id, Users myUser)
         {
 
             var result = Zxcvbn.Core.EvaluatePassword(myUser.UserPassword);
             if (result.Score >= 2)
             {
-                _userRepository.updateUser(id, myUser);
+                _userRepository.UpdateUser(id, myUser);
                 return true;
             }
             return false;

@@ -7,8 +7,8 @@ namespace Repository
 {
     public class UserRepository : IUserRepository
     {
-        string _filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "usersInfo.txt");
-        public Users getUserByID(int id)
+        private readonly string _filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "usersInfo.txt");
+        public Users GetUserById(int id)
         {
            
             using (StreamReader reader = System.IO.File.OpenText(_filePath))
@@ -23,7 +23,7 @@ namespace Repository
             }
             return null;
         }
-        public Users addUser(Users user)
+        public Users AddUser(Users user)
         {
             int numberOfUsers = System.IO.File.ReadLines(_filePath).Count();
             user.UserId = numberOfUsers + 1;
@@ -31,7 +31,7 @@ namespace Repository
             System.IO.File.AppendAllText(_filePath, userJson + Environment.NewLine);
             return user;
         }
-        public Users loginUser(Users loginUser)
+        public Users LoginUser(Users loginUser)
         {
             using (StreamReader reader = System.IO.File.OpenText(_filePath))
             {
@@ -46,7 +46,7 @@ namespace Repository
             return null;
 
         }
-        public void updateUser(int id, Users Myuser)
+        public void UpdateUser(int id, Users myUser)
         {
             string textToReplace = string.Empty;
             using (StreamReader reader = System.IO.File.OpenText(_filePath))
@@ -63,7 +63,7 @@ namespace Repository
             if (textToReplace != string.Empty)
             {
                 string text = System.IO.File.ReadAllText(_filePath);
-                text = text.Replace(textToReplace, JsonSerializer.Serialize(Myuser));
+                text = text.Replace(textToReplace, JsonSerializer.Serialize(myUser));
                 System.IO.File.WriteAllText(_filePath, text);
             }
 
