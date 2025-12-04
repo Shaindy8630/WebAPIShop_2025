@@ -16,20 +16,25 @@ namespace Service
 
         public async Task<IEnumerable<Users>> GetUsers()
         {
-           
-            return _userRepository.getUserByID(id);
+            return await _userRepository.GetUsers();
         }
 
-        public Users addUser(Users user)
+        public async Task<Users> getUserByID(int id)
         {
            
-            return _userRepository.addUser(user);
+            return await _userRepository.getUserByID(id);
         }
 
-        public Users loginUser(Users loginUser)
+        public async Task< Users> addUser(Users user)
+        {
+           
+            return await _userRepository.addUser(user);
+        }
+
+        public async Task< Users> loginUser(Users loginUser)
         {
             
-            return _userRepository.loginUser(loginUser);
+            return await _userRepository.loginUser(loginUser);
         }
         public bool UpdateUser(int id, Users myUser)
         {
@@ -37,7 +42,7 @@ namespace Service
             var result = Zxcvbn.Core.EvaluatePassword(myUser.UserPassword);
             if (result.Score >= 2)
             {
-                _userRepository.UpdateUser(id, myUser);
+                _userRepository.updateUser(id, myUser);
                 return true;
             }
             return false;
