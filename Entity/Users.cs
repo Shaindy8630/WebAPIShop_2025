@@ -3,9 +3,9 @@
 namespace Entity
 {
 
-    public class Users
+    public partial class Users
     {
-        public int UserId { get; set; }
+        public int Id { get; set; }
 
         [EmailAddress, Required]
         public string UserEmail { get; set; }

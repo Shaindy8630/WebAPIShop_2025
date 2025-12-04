@@ -29,14 +29,14 @@ namespace WebAPIShop.Controllers
 
         //GET: api/<UsersController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task< IEnumerable<string>> Get()
         {
             return new string[] { "can't show users list:(" };
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public ActionResult<Users> Get(int id)
+        public async Task< ActionResult<IEnumerable<Users>>> Get(int id)
         {
 
             var user = _iUserService.GetUserById(id);
@@ -48,17 +48,17 @@ namespace WebAPIShop.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public ActionResult<Users> Post([FromBody] Users user)
+        public async Task< ActionResult<Users>>Post([FromBody] Users user)
         {
             bool isPasswordStrong = _iPasswordService.IsPasswordStrong(user.UserPassword);
             if (!isPasswordStrong)
                 return BadRequest("Password is not strong enough.");
-            var newUser = _iUserService.AddUser(user);
-            return CreatedAtAction(nameof(Get), new { id = newUser.UserId }, newUser);
+            var newUser = _iUserService.addUser(user);
+            return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
         }
 
         [HttpPost("login")]
-        public ActionResult<Users> Login([FromBody] Users loginUser)
+        public async Task< ActionResult<Users>> Login([FromBody] Users loginUser)
         {
             var user = _iUserService.LoginUser(loginUser);
             if (user != null)
@@ -68,7 +68,7 @@ namespace WebAPIShop.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Users myUser)
+        public async Task<IActionResult> Put(int id, [FromBody] Users myUser)
         {
             bool isUpdateSuccessful = _iUserService.UpdateUser(id, myUser);
             if (!isUpdateSuccessful)

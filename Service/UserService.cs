@@ -13,22 +13,23 @@ namespace Service
         {
             _userRepository = userRepository;
         }
-        public Users GetUserById(int id)
+
+        public async Task<IEnumerable<Users>> GetUsers()
         {
            
-            return _userRepository.GetUserById(id);
+            return _userRepository.getUserByID(id);
         }
 
-        public Users AddUser(Users user)
+        public Users addUser(Users user)
         {
            
-            return _userRepository.AddUser(user);
+            return _userRepository.addUser(user);
         }
 
-        public Users LoginUser(Users loginUser)
+        public Users loginUser(Users loginUser)
         {
             
-            return _userRepository.LoginUser(loginUser);
+            return _userRepository.loginUser(loginUser);
         }
         public bool UpdateUser(int id, Users myUser)
         {
