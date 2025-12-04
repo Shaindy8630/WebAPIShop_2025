@@ -14,6 +14,6 @@ namespace Service
        Task< Users> loginUser(Users loginUser);
 
         Task <IEnumerable<Users>> GetUsers();
-        bool updateUser(int id, Users user);
+        bool UpdateUser(int id, Users user);
     }
 }

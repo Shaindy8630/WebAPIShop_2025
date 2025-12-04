@@ -39,7 +39,7 @@ namespace WebAPIShop.Controllers
         public async Task< ActionResult<IEnumerable<Users>>> Get(int id)
         {
 
-            var user = _iUserService.GetUserById(id);
+            var user = _iUserService.getUserByID(id);
             if (user == null)
                 return NotFound();
             return Ok(user);
@@ -60,7 +60,7 @@ namespace WebAPIShop.Controllers
         [HttpPost("login")]
         public async Task< ActionResult<Users>> Login([FromBody] Users loginUser)
         {
-            var user = _iUserService.LoginUser(loginUser);
+            var user = _iUserService.loginUser(loginUser);
             if (user != null)
                 return Ok(user);
             return NotFound();
