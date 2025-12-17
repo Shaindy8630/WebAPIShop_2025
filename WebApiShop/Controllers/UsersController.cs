@@ -68,11 +68,5 @@ namespace WebAPIShop.Controllers
                 return BadRequest("Password is not strong enough");
             return NoContent();
         }
-
-        // DELETE api/<UsersController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

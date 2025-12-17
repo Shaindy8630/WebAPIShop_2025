@@ -3,6 +3,7 @@
 using System.Text.Json;
 using Entity;
 using Repository.Models;
+using Microsoft.EntityFrameworkCore;
 namespace Repository
  
 {
@@ -43,7 +44,6 @@ namespace Repository
         }
         public async Task UpdateUser(int id, Users Myuser)
         {
-
             _dbContext.Users.Update(Myuser);
             await _dbContext.SaveChangesAsync();
         }
