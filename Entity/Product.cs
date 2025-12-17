@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Repository.Models;
 
-public partial class Proudct
+public partial class Product
 {
     public int Id { get; set; }
 

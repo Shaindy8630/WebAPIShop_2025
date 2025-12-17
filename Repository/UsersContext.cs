@@ -15,7 +15,7 @@ public partial class UsersContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
-    public virtual DbSet<Proudct> Proudcts { get; set; }
+    public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<Users> Users { get; set; }
 
@@ -31,7 +31,7 @@ public partial class UsersContext : DbContext
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 
-        modelBuilder.Entity<Proudct>(entity =>
+        modelBuilder.Entity<Product>(entity =>
         {
             entity.HasNoKey();
 
@@ -56,17 +56,20 @@ public partial class UsersContext : DbContext
         modelBuilder.Entity<Users>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.UserEmail)
-                .HasMaxLength(20)
+            entity.Property(e => e.UserName)
+                .HasMaxLength(50)
                 .IsFixedLength();
-            entity.Property(e => e.UserFirstName)
-                .HasMaxLength(10)
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
                 .IsFixedLength();
-            entity.Property(e => e.UserLastName)
-                .HasMaxLength(10)
+            entity.Property(e => e.FirstName)
+                .HasMaxLength(50)
+                .IsFixedLength();
+            entity.Property(e => e.LastName)
+                .HasMaxLength(50)
                 .IsFixedLength();
             entity.Property(e => e.UserPassword)
-                .HasMaxLength(10)
+                .HasMaxLength(50)
                 .IsFixedLength();
         });
 

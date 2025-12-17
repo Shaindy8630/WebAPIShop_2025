@@ -3,12 +3,13 @@
 using System.Text.Json;
 using Entity;
 using Repository.Models;
+using Microsoft.EntityFrameworkCore;
 namespace Repository
  
 {
     public class UserRepository : IUserRepository
     {
-        UsersContext _dbContext;
+        private readonly UsersContext _dbContext;
 
         public UserRepository(UsersContext dbContext)
         {
@@ -17,33 +18,32 @@ namespace Repository
 
         public async Task<IEnumerable<Users>> GetUsers()
         {
-            return _dbContext.Users;
+            return await _dbContext.Users.ToListAsync();
         }
-        public async Task< Users> getUserByID(int id)
+        public async Task<Users> GetUserByID(int id)
         {
            
            return await _dbContext.Users.FindAsync(id);
         }
-        public async Task< Users >addUser(Users user)
+        public async Task<Users> AddUser(Users user)
         {
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
             return user;
         }
-        public async Task< Users> loginUser(Users loginUser)
+        public async Task<Users> LoginUser(Users loginUser)
         {
             try
             {
-                return await _dbContext.Users.FindAsync(loginUser);
+                return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == loginUser.UserName && u.UserPassword == loginUser.UserPassword);
             }
             catch (Exception ex)
             {
                 return null;
             }
         }
-        public async void updateUser(int id, Users Myuser)
+        public async Task UpdateUser(int id, Users Myuser)
         {
-
             _dbContext.Users.Update(Myuser);
             await _dbContext.SaveChangesAsync();
         }

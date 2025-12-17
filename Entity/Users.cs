@@ -7,22 +7,17 @@ namespace Entity
     {
         public int Id { get; set; }
 
-        [EmailAddress, Required]
-        public string UserEmail { get; set; }
-        public string UserFirstName { get; set; }
-        public string UserLastName { get; set; }
+        [Required]
+        public string UserName { get; set; }
 
-        [StringLength(maximumLength: 8, ErrorMessage = "password must be 8 chars max"), MinLength(4)]
+        public string Email { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
         public string UserPassword { get; set; }
-
     }
-
-    //public class LoginUsers
-    //{
-    //    public string LoginUserEmail { get; set; }
-    //    public string LoginUserPassword { get; set; }
-
-    //}
 }
 
 

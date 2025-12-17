@@ -10,18 +10,18 @@ namespace WebApiShop.Controllers
     [ApiController]
     public class PasswordController : ControllerBase
     {
-        IPasswordService _iPasswordService;
+        IPasswordService _passwordService;
 
         public PasswordController(IPasswordService passwordService)
         {
-            _iPasswordService = passwordService;
+            _passwordService = passwordService;
         }
 
         // POST api/<PasswordController>
         [HttpPost]
         public ActionResult<Password> Post([FromBody] Password password)
         {
-            Password resPassword = _iPasswordService.CheckPasswordStrong(password);
+            Password resPassword = _passwordService.CheckPasswordStrong(password);
             if (resPassword == null)
                 return NoContent();
             return Ok(resPassword);
