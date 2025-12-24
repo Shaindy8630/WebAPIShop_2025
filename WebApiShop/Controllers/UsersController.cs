@@ -36,7 +36,7 @@ namespace WebAPIShop.Controllers
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public async Task< ActionResult<IEnumerable<Users>>> Get(int id)
+        public async Task< ActionResult<IEnumerable<User>>> Get(int id)
         {
 
             var user = _iUserService.getUserByID(id);
@@ -48,17 +48,17 @@ namespace WebAPIShop.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public async Task< ActionResult<Users>>Post([FromBody] Users user)
+        public async Task< ActionResult<User>>Post([FromBody] User user)
         {
-            bool isPasswordStrong = _iPasswordService.IsPasswordStrong(user.UserPassword);
+            bool isPasswordStrong = _iPasswordService.IsPasswordStrong(user.Password);
             if (!isPasswordStrong)
                 return BadRequest("Password is not strong enough.");
-            var newUser = _iUserService.addUser(user);
-            return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
+             user = await _iUserService.addUser(user);
+            return CreatedAtAction(nameof(Get), new { id = user.UserId }, user);
         }
 
         [HttpPost("login")]
-        public async Task< ActionResult<Users>> Login([FromBody] Users loginUser)
+        public async Task< ActionResult<User>> Login([FromBody] User loginUser)
         {
             var user = _iUserService.loginUser(loginUser);
             if (user != null)
@@ -68,7 +68,7 @@ namespace WebAPIShop.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Users myUser)
+        public async Task<IActionResult> Put(int id, [FromBody] User myUser)
         {
             bool isUpdateSuccessful = _iUserService.UpdateUser(id, myUser);
             if (!isUpdateSuccessful)

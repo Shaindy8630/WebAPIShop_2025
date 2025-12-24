@@ -7,9 +7,9 @@ namespace WebAPIShop.Controllers
     {
         void Delete(int id);
         Task<IEnumerable<string>> Get();
-        Task<ActionResult<IEnumerable<Users>>> Get(int id);
-        Task<ActionResult<Users>> Login([FromBody] Users loginUser);
-        Task<ActionResult<Users> >Post([FromBody] Users user);
-        Task<IActionResult> Put(int id, [FromBody] Users myUser);
+        Task<ActionResult<IEnumerable<User>>> Get(int id);
+        Task<ActionResult<User>> Login([FromBody] User loginUser);
+        Task<ActionResult<User> >Post([FromBody] User user);
+        Task<IActionResult> Put(int id, [FromBody] User myUser);
     }
 }

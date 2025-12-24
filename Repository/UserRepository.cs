@@ -15,22 +15,22 @@ namespace Repository
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Users>> GetUsers()
+        public async Task<IEnumerable<User>> GetUsers()
         {
             return _dbContext.Users;
         }
-        public async Task< Users> getUserByID(int id)
+        public async Task< User> getUserByID(int id)
         {
            
            return await _dbContext.Users.FindAsync(id);
         }
-        public async Task< Users >addUser(Users user)
+        public async Task< User >addUser(User user)
         {
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
             return user;
         }
-        public async Task< Users> loginUser(Users loginUser)
+        public async Task< User> loginUser(User loginUser)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace Repository
                 return null;
             }
         }
-        public async void updateUser(int id, Users Myuser)
+        public async void updateUser(int id, User Myuser)
         {
 
             _dbContext.Users.Update(Myuser);

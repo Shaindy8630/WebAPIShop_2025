@@ -14,32 +14,32 @@ namespace Service
             _userRepository = userRepository;
         }
 
-        public async Task<IEnumerable<Users>> GetUsers()
+        public async Task<IEnumerable<User>> GetUsers()
         {
             return await _userRepository.GetUsers();
         }
 
-        public async Task<Users> getUserByID(int id)
+        public async Task<User> getUserByID(int id)
         {
            
             return await _userRepository.getUserByID(id);
         }
 
-        public async Task< Users> addUser(Users user)
+        public async Task< User> addUser(User user)
         {
            
             return await _userRepository.addUser(user);
         }
 
-        public async Task< Users> loginUser(Users loginUser)
+        public async Task< User> loginUser(User loginUser)
         {
             
             return await _userRepository.loginUser(loginUser);
         }
-        public bool UpdateUser(int id, Users myUser)
+        public bool UpdateUser(int id, User myUser)
         {
 
-            var result = Zxcvbn.Core.EvaluatePassword(myUser.UserPassword);
+            var result = Zxcvbn.Core.EvaluatePassword(myUser.Password);
             if (result.Score >= 2)
             {
                 _userRepository.updateUser(id, myUser);

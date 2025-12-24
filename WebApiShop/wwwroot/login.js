@@ -74,8 +74,8 @@ const login = async () => {
 const checkStrength = async () => {
     const password = passwordForUpdate.value;
     const passwordObj = {
-        password: password,
-        Strength: 0
+        passwordValue: password,
+        strength: 0
     };
     try {
         const response = await fetch('https://localhost:44367/api/Password', {  ///checkPassword', {
