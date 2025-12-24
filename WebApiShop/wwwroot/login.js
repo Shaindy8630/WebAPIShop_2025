@@ -11,10 +11,10 @@ const register = async () => {
 
     const newUser = {
         userId: 0,
-        UserEmail: emailForUpdate.value,
-        UserFirstName: firstNameForUpdate.value,
-        UserLastName: lastNameForUpdate.value,
-        UserPassword: passwordForUpdate.value
+        Email: emailForUpdate.value,
+        FirstName: firstNameForUpdate.value,
+        LastName: lastNameForUpdate.value,
+        Password: passwordForUpdate.value
     }
 
 

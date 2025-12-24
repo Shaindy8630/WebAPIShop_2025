@@ -20,6 +20,8 @@ namespace WebAPIShop.Controllers
 
         IUserService _iUserService;
         IPasswordService _iPasswordService;
+        private readonly ILogger<UsersController> _logger;
+
 
         public UsersController(IUserService userService, IPasswordService passwordService)
         {
@@ -71,6 +73,8 @@ namespace WebAPIShop.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] User myUser)
         {
             bool isUpdateSuccessful = _iUserService.UpdateUser(id, myUser);
+            _logger.LogInformation($"login attempted id:{myUser.UserId} email:{myUser.Email} first name:{myUser.FirstName} last name:{myUser.LastName}");
+
             if (!isUpdateSuccessful)
                 return BadRequest("Password is not strong enough");
             return NoContent();

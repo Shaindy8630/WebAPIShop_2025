@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NLog.Web;
 using Repository;
 using Service;
 
@@ -8,6 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+//builder.Services.AddOpenApi();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
+builder.Host.UseNLog();
+
+
 
 builder.Services.AddScoped<IUserService, UserService>();
 
@@ -27,13 +38,26 @@ builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
-builder.Services.AddDbContext<Repository.Models.UsersContext>
-    (option => option.UseSqlServer("Data Source=LAPTOP-E7T8VC4N;Initial Catalog=AddNetExemple;Integrated Security=True;Encrypt=True;Trust Server Certificate=True"));
+builder.Services.AddDbContext<Repository.Models.UsersContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
+
 
 //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+
 
 // Configure the HTTP request pipeline.
 
