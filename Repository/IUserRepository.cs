@@ -9,11 +9,11 @@ namespace Repository
 {
     public interface IUserRepository
     {
-        Task<Users> AddUser(Users user);
-        Task<Users> GetUserByID(int id);
-        Task<Users> LoginUser(Users loginUser);
+        Task<User> addUser(User user);
+        Task<User> getUserByID(int id);
+       Task< User> loginUser(User loginUser);
 
-        Task<IEnumerable<Users>> GetUsers();
-        Task UpdateUser(int id, Users myUser);
+        Task<IEnumerable<User>> GetUsers();
+        void updateUser(int id, User myUser);
     }
 }

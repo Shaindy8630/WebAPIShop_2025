@@ -11,10 +11,10 @@ const register = async () => {
 
     const newUser = {
         userId: 0,
-        UserEmail: emailForUpdate.value,
-        UserFirstName: firstNameForUpdate.value,
-        UserLastName: lastNameForUpdate.value,
-        UserPassword: passwordForUpdate.value
+        Email: emailForUpdate.value,
+        FirstName: firstNameForUpdate.value,
+        LastName: lastNameForUpdate.value,
+        Password: passwordForUpdate.value
     }
 
 
@@ -74,8 +74,8 @@ const login = async () => {
 const checkStrength = async () => {
     const password = passwordForUpdate.value;
     const passwordObj = {
-        password: password,
-        Strength: 0
+        passwordValue: password,
+        strength: 0
     };
     try {
         const response = await fetch('https://localhost:44367/api/Password', {  ///checkPassword', {

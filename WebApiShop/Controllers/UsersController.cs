@@ -18,21 +18,30 @@ namespace WebAPIShop.Controllers
     public class UsersController : ControllerBase, IUserController
     {
 
-        private readonly IUserService _userService;
-        private readonly IPasswordService _passwordService;
+        IUserService _iUserService;
+        IPasswordService _iPasswordService;
+        private readonly ILogger<UsersController> _logger;
+
 
         public UsersController(IUserService userService, IPasswordService passwordService)
         {
-            _userService = userService;
-            _passwordService = passwordService;
+            _iUserService = userService;
+            _iPasswordService = passwordService;
+        }
+
+        //GET: api/<UsersController>
+        [HttpGet]
+        public async Task< IEnumerable<string>> Get()
+        {
+            return new string[] { "can't show users list:(" };
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Users>> Get(int id)
+        public async Task< ActionResult<IEnumerable<User>>> Get(int id)
         {
 
-            var user = await _userService.GetUserByID(id);
+            var user = _iUserService.getUserByID(id);
             if (user == null)
                 return NotFound();
             return Ok(user);
@@ -41,32 +50,43 @@ namespace WebAPIShop.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public async Task<ActionResult<Users>> Post([FromBody] Users user)
+        public async Task< ActionResult<User>>Post([FromBody] User user)
         {
-            bool isPasswordStrong = _passwordService.IsPasswordStrong(user.UserPassword);
+            bool isPasswordStrong = _iPasswordService.IsPasswordStrong(user.Password);
             if (!isPasswordStrong)
                 return BadRequest("Password is not strong enough.");
-            var newUser = await _userService.AddUser(user);
-            return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
+             user = await _iUserService.addUser(user);
+            return CreatedAtAction(nameof(Get), new { id = user.UserId }, user);
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<Users>> Login([FromBody] Users loginUser)
+        public async Task< ActionResult<User>> Login([FromBody] User loginUser)
         {
-            var user = await _userService.LoginUser(loginUser);
+            var user = _iUserService.loginUser(loginUser);
             if (user != null)
                 return Ok(user);
-            return Unauthorized("Invalid credentials.");
+            return NotFound();
         }
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Users myUser)
+        public async Task<IActionResult> Put(int id, [FromBody] User myUser)
         {
-            bool isUpdateSuccessful = await _userService.UpdateUser(id, myUser);
+            bool isUpdateSuccessful = _iUserService.UpdateUser(id, myUser);
+            _logger.LogInformation($"login attempted id:{myUser.UserId} email:{myUser.Email} first name:{myUser.FirstName} last name:{myUser.LastName}");
+
             if (!isUpdateSuccessful)
                 return BadRequest("Password is not strong enough");
             return NoContent();
+        }
+
+       
+
+
+        // DELETE api/<UsersController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
         }
     }
 }

@@ -2,22 +2,21 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using Entity;
 
 namespace Repository.Models;
 
-public partial class Product
+public partial class Order
 {
-    public int ProductId { get; set; }
+    public int OrderId { get; set; }
 
-    public string ProductName { get; set; }
+    public DateOnly OrderDate { get; set; }
 
-    public decimal Price { get; set; }
+    public decimal? OrderSum { get; set; }
 
-    public int? CategoryId { get; set; }
-
-    public string Description { get; set; }
-
-    public virtual Category Category { get; set; }
+    public int UserId { get; set; }
 
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+    public virtual User User { get; set; }
 }

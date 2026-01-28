@@ -9,10 +9,11 @@ namespace Service
 {
     public interface IUserService
     {
-        Task<Users> AddUser(Users user);
-        Task<Users> GetUserByID(int id);
-        Task<Users> LoginUser(Users loginUser);
-        Task<IEnumerable<Users>> GetUsers();
-        Task<bool> UpdateUser(int id, Users user);
+       Task<User> addUser(User user);
+       Task< User> getUserByID(int id);
+       Task< User> loginUser(User loginUser);
+
+       Task <IEnumerable<User>> GetUsers();
+       bool UpdateUser(int id, User user);
     }
 }

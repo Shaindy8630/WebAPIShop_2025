@@ -3,47 +3,47 @@
 using System.Text.Json;
 using Entity;
 using Repository.Models;
-using Microsoft.EntityFrameworkCore;
 namespace Repository
  
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UsersContext _dbContext;
+        UsersContext _dbContext;
 
         public UserRepository(UsersContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Users>> GetUsers()
+        public async Task<IEnumerable<User>> GetUsers()
         {
-            return await _dbContext.Users.ToListAsync();
+            return _dbContext.Users;
         }
-        public async Task<Users> GetUserByID(int id)
+        public async Task< User> getUserByID(int id)
         {
            
            return await _dbContext.Users.FindAsync(id);
         }
-        public async Task<Users> AddUser(Users user)
+        public async Task< User >addUser(User user)
         {
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
             return user;
         }
-        public async Task<Users> LoginUser(Users loginUser)
+        public async Task< User> loginUser(User loginUser)
         {
             try
             {
-                return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == loginUser.UserName && u.UserPassword == loginUser.UserPassword);
+                return await _dbContext.Users.FindAsync(loginUser);
             }
             catch (Exception ex)
             {
                 return null;
             }
         }
-        public async Task UpdateUser(int id, Users Myuser)
+        public async void updateUser(int id, User Myuser)
         {
+
             _dbContext.Users.Update(Myuser);
             await _dbContext.SaveChangesAsync();
         }
