@@ -19,18 +19,18 @@ namespace Repository
         {
             return _dbContext.Users;
         }
-        public async Task< User> getUserByID(int id)
+        public async Task<User> GetUserByID(int id)
         {
            
            return await _dbContext.Users.FindAsync(id);
         }
-        public async Task< User >addUser(User user)
+        public async Task<User> AddUser(User user)
         {
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
             return user;
         }
-        public async Task< User> loginUser(User loginUser)
+        public async Task<User> LoginUser(User loginUser)
         {
             try
             {
