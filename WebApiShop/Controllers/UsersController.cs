@@ -5,7 +5,6 @@ using Entity;
 using Service;
 
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 using Repository;
 
@@ -18,30 +17,30 @@ namespace WebAPIShop.Controllers
     public class UsersController : ControllerBase, IUserController
     {
 
-        IUserService _iUserService;
-        IPasswordService _iPasswordService;
+        IUserService _userService;
+        IPasswordService _passwordService;
         private readonly ILogger<UsersController> _logger;
 
 
         public UsersController(IUserService userService, IPasswordService passwordService)
         {
-            _iUserService = userService;
-            _iPasswordService = passwordService;
+            _userService = userService;
+            _passwordService = passwordService;
         }
 
         //GET: api/<UsersController>
         [HttpGet]
-        public async Task< IEnumerable<string>> Get()
+        public async Task<IEnumerable<string>> Get()
         {
             return new string[] { "can't show users list:(" };
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public async Task< ActionResult<IEnumerable<User>>> Get(int id)
+        public async Task<ActionResult<IEnumerable<User>>> Get(int id)
         {
 
-            var user = _iUserService.getUserByID(id);
+            var user = _userService.GetUserByID(id);
             if (user == null)
                 return NotFound();
             return Ok(user);
